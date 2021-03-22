@@ -29,16 +29,14 @@
         {{ item }}
       </v-list-item>
     </v-list>
-    <v-btn @click.prevent="pushearBanda" type="submit">Registrar</v-btn>
+    <v-btn @click.prevent="enviarBanda" type="submit">Registrar</v-btn>
   </v-form>
 </template>
 
 <script>
-import { eventBus } from "../main";
 export default {
   data() {
     return {
-      alert: false,
       generos: ["Rock", "Pop", "Indie", "Metal"],
       integranteNuevo: "",
       integrantesBanda: [],
@@ -47,24 +45,21 @@ export default {
     };
   },
   methods: {
-    agregarBanda(name, gender, integrantes) {
-      const nuevaBanda = {
-        id: name,
-        genero: gender,
-        integrantes: integrantes,
-      };
-      eventBus.$emit("agregarBanda", nuevaBanda);
+    agregarBanda(){
+    const nuevaBanda = {
+    id : id,
+    genero : genero,
+    integrantes : integrantes
+    }},
+    async enviarBanda(){
+      this.limpiarCampos();
+      console.log(nuevaBanda);
     },
-    pushearBanda() {
-      const bandName = this.bandName;
-      const genderBand = this.bandGender;
-      const integrantsBand = this.integrantesBanda;
-      this.agregarBanda(bandName, genderBand, integrantsBand);
+    limpiarCampos(){      
       this.bandGender = '';
       this.bandName = '';
       this.integranteNuevo = '';
       this.integrantesBanda = [];
-      alert("Datos enviados correctamente");
     },
     agregarIntegrante() {
       this.integrantesBanda.push(this.integranteNuevo);

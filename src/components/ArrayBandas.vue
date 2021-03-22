@@ -12,7 +12,7 @@
       </v-list>
     </v-col>
     <v-col>
-      <v-btn @click="borrar(id)" class="mx-2" fab dark color="indigo" small>
+      <v-btn class="mx-2" fab dark color="indigo" small>
         <v-icon dark> mdi-minus </v-icon>
       </v-btn>
     </v-col>
@@ -22,7 +22,6 @@
 
 <script>
 export default {
-  props:['id', 'genero', 'integrantes','borrar']
 };
 </script>
 

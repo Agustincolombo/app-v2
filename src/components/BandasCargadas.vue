@@ -1,19 +1,12 @@
 <template>
   <div id="inputs">
     <v-list>
-      <info-bandas v-for="comp in bandasAgregadas"
-      :key="comp.id"
-      :id="comp.id"
-      :genero="comp.genero"
-      :integrantes="comp.integrantes"
-      :borrar="borrar"
-      ></info-bandas>
+      <info-bandas></info-bandas>
     </v-list>
   </div>
 </template>
 
 <script>
-import { eventBus } from "../main";
 import InfoBandas from "./ArrayBandas";
 export default {
   data() {
@@ -30,22 +23,10 @@ export default {
           ],
         },
       ],
-      bandaNueva:{}
     };
   },
   components: {
     InfoBandas,
-  },
-  created() {
-    eventBus.$on("agregarBanda", (data) => {
-      this.bandasAgregadas.push(data);
-    });
-  },
-  methods: {
-    borrar(bandaId){
-      const bandaIndex = this.bandasAgregadas.findIndex(banda => banda.id == bandaId);
-      this.bandasAgregadas.splice(bandaIndex, 1)
-    }
   },
 };
 </script>
