@@ -1,6 +1,6 @@
 <template>
   <v-form id="inputs">
-    <v-text-field type="text" label="Nombre" v-model="bandName" />
+    <v-text-field type="text" label="Nombre" v-model="nameBand" />
     <v-select
       :items="generos"
       type="text"
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -41,29 +42,44 @@ export default {
       integranteNuevo: "",
       integrantesBanda: [],
       bandGender: "",
-      bandName: "",
+      nameBand: "",
+      banda: "",
+      respuesta: "",
     };
   },
   methods: {
-    agregarBanda(){
-    const nuevaBanda = {
-    id : id,
-    genero : genero,
-    integrantes : integrantes
-    }},
-    async enviarBanda(){
-      this.limpiarCampos();
-      console.log(nuevaBanda);
+    agregarBanda(name, gender, integrantes) {
+      const nuevaBanda = {
+        nombre: name,
+        genero: gender,
+        integrantes: integrantes,
+      };
+      this.banda = nuevaBanda;
     },
-    limpiarCampos(){      
-      this.bandGender = '';
-      this.bandName = '';
-      this.integranteNuevo = '';
+    obtenerBanda() {
+      const nameBand = this.nameBand;
+      const genderBand = this.bandGender;
+      const integrantsBand = this.integrantesBanda;
+      this.agregarBanda(nameBand, genderBand, integrantsBand);
+      this.limpiarCampos();
+    },
+    limpiarCampos() {
+      this.bandGender = "";
+      this.nameBand = "";
+      this.integranteNuevo = "";
       this.integrantesBanda = [];
     },
     agregarIntegrante() {
       this.integrantesBanda.push(this.integranteNuevo);
       this.integranteNuevo = "";
+    },
+    async enviarBanda() {
+      this.obtenerBanda();
+      const response = await axios.post(
+        "https://proyect-vuejs-ac-default-rtdb.firebaseio.com/bandas.json",
+        this.banda
+      );
+      this.respuesta = response.data;
     },
   },
 };
