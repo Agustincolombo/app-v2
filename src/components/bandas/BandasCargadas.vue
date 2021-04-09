@@ -1,5 +1,6 @@
 <template>
   <div id="inputs">
+    <h1>Todas las bandas</h1>
     <v-list>
       <info-bandas
         v-for="comp in bandasAgregadas"
@@ -8,8 +9,12 @@
         :genero="comp.genero"
         :integrantes="comp.integrantes"
       ></info-bandas>
-      <v-btn id="cargarBandas" @click.prevent="bandas"
-        >Cargar todas las bandas</v-btn>
+      <v-btn id="cargarBandas" @click.prevent="bandas"> Cargar bandas </v-btn>
+      <v-btn @click.prevent="borrarbandas"> Borrar bandas </v-btn>
+      <router-link to="/registro">
+        <v-btn> Nueva banda </v-btn>
+      </router-link>
+      <router-view />
     </v-list>
   </div>
 </template>
@@ -36,15 +41,29 @@ export default {
       for (const key in data) {
         resultadoBandas.push(data[key]);
       }
-      this.bandasAgregadas = resultadoBandas;
+      if (resultadoBandas.length === 0){
+        alert("No hay bandas cargadas")
+      } else{
+        this.bandasAgregadas = resultadoBandas;
+      }
+    },
+    async borrarbandas() {
+      await axios.delete(
+        "https://proyect-vuejs-ac-default-rtdb.firebaseio.com/bandas.json"
+      );
+      this.bandasAgregadas = []
     },
   },
 };
 </script>
 
 <style scoped>
-#cargarBandas {
-  margin-top: 3%;
+h1 {
+  margin-bottom: 3%;
+}
+button {
+  margin: 3%;
+  margin-bottom: 0%;
 }
 #inputs {
   margin: 7vh 0;

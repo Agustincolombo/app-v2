@@ -11,27 +11,13 @@
           <v-list-item>{{ item }}</v-list-item>
         </v-list>
       </v-col>
-      <v-col>
-        <v-btn @click="borrarbandas" class="mx-2" fab dark color="indigo" small>
-          <v-icon dark> mdi-minus </v-icon>
-        </v-btn>
-      </v-col>
     </v-row>
   </v-card>
 </template>
 
 <script>
-import axios from "axios";
 export default {
   props: ["nombre", "genero", "integrantes"],
-  methods: {
-    async borrarbandas() {
-      const response = await axios.delete(
-        "https://proyect-vuejs-ac-default-rtdb.firebaseio.com/bandas.json"
-      );
-      console.log(response)
-    },
-  },
 };
 </script>
 

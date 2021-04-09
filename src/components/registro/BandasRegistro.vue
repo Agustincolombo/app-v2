@@ -1,5 +1,6 @@
 <template>
   <v-form id="inputs">
+    <h1>Registro de banda</h1>
     <v-text-field type="text" label="Nombre" v-model="nameBand" />
     <v-select
       :items="generos"
@@ -30,6 +31,9 @@
       </v-list-item>
     </v-list>
     <v-btn @click.prevent="enviarBanda" type="submit">Registrar</v-btn>
+    <router-link to="/bandas">
+      <v-btn>Cancelar</v-btn>
+    </router-link>
   </v-form>
 </template>
 
@@ -43,25 +47,12 @@ export default {
       integrantesBanda: [],
       bandGender: "",
       nameBand: "",
-      banda: "",
-      respuesta: "",
     };
   },
   methods: {
-    agregarBanda(name, gender, integrantes) {
-      const nuevaBanda = {
-        nombre: name,
-        genero: gender,
-        integrantes: integrantes,
-      };
-      this.banda = nuevaBanda;
-    },
-    obtenerBanda() {
-      const nameBand = this.nameBand;
-      const genderBand = this.bandGender;
-      const integrantsBand = this.integrantesBanda;
-      this.agregarBanda(nameBand, genderBand, integrantsBand);
-      this.limpiarCampos();
+    agregarIntegrante() {
+      this.integrantesBanda.push(this.integranteNuevo);
+      this.integranteNuevo = "";
     },
     limpiarCampos() {
       this.bandGender = "";
@@ -69,23 +60,38 @@ export default {
       this.integranteNuevo = "";
       this.integrantesBanda = [];
     },
-    agregarIntegrante() {
-      this.integrantesBanda.push(this.integranteNuevo);
-      this.integranteNuevo = "";
-    },
     async enviarBanda() {
-      this.obtenerBanda();
-      const response = await axios.post(
-        "https://proyect-vuejs-ac-default-rtdb.firebaseio.com/bandas.json",
-        this.banda
-      );
-      this.respuesta = response.data;
+      if (
+        this.nameBand.length == 0 ||
+        this.bandGender.length == 0 ||
+        this.integrantesBanda.length == 0
+      ) {
+        alert("Porfavor, rellene los campos vacios");
+      } else {
+        const nuevaBanda = {
+          nombre: this.nameBand,
+          genero: this.bandGender,
+          integrantes: this.integrantesBanda,
+        };
+        await axios.post(
+          "https://proyect-vuejs-ac-default-rtdb.firebaseio.com/bandas.json",
+          nuevaBanda
+        );
+        this.limpiarCampos();
+        this.$router.push("/bandas");
+      }
     },
   },
 };
 </script>
 
 <style scoped>
+h1 {
+  margin-bottom: 3%;
+}
+button {
+  margin: 0% 3%;
+}
 #inputs {
   margin: 7vh 0;
   padding: 0 10vw;
